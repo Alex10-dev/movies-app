@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/providers/movies/movies_providers.dart';
+import 'package:movies/presentation/widgets/movies/main_posters_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -12,8 +13,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _HomeView()
+
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
+    return Scaffold(
+      backgroundColor: colors.primary,
+      body: const _HomeView()
     );
   }
 }
@@ -38,15 +43,52 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
 
     final List<Movie> nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
+    final ColorScheme colors = Theme.of(context).colorScheme;
 
-    return ListView.builder(
-      itemCount: nowPlayingMovies.length,
-      itemBuilder: (BuildContext context, int index) {
-        final Movie movie = nowPlayingMovies[index];
-        return ListTile(
-          title: Text(movie.title),
-        );
-      },
+    return CustomScrollView(
+      slivers: <Widget>[
+
+        SliverAppBar(
+          backgroundColor: Colors.transparent,
+          pinned: true,
+          snap: false,
+          floating: false,
+          expandedHeight: 650,
+          flexibleSpace: FlexibleSpaceBar(
+            title: const Text('Información', style: TextStyle(color: Colors.white),),
+            background: MainPostersCarousel(nowPlayingMovies: nowPlayingMovies),
+          ),
+        ),
+
+        const SliverToBoxAdapter(
+          child: Placeholder(
+            color: Colors.white,
+          )
+        ),
+
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if( index == nowPlayingMovies.length ) {
+                return const SizedBox(height: 10);
+              }
+              return Container(
+                color: colors.onPrimary,
+                height: 80,
+                child: Center(
+                  child: Text(
+                    nowPlayingMovies[index].title, 
+                    style: TextStyle( color: colors.onPrimaryContainer ),
+                  )
+                )
+              );
+            },
+            childCount: nowPlayingMovies.length + 1,
+          )
+        ),
+
+
+      ],
     );
   }
 }
