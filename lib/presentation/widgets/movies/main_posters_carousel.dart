@@ -27,21 +27,7 @@ class MainPostersCarousel extends StatelessWidget {
           ],
         ),
     
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              stops: const <double>[ 0.2, 0.75 ],
-              colors: <Color>[
-                Colors.black.withAlpha(180),
-                Colors.black.withAlpha(0)
-              ],
-            )
-          ),
-        ),
+        const _GradientContainer(),
     
         Column(
           children: <Widget>[
@@ -54,6 +40,29 @@ class MainPostersCarousel extends StatelessWidget {
         )
     
       ],
+    );
+  }
+}
+
+class _GradientContainer extends StatelessWidget {
+  const _GradientContainer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          stops: const <double>[ 0.2, 0.75 ],
+          colors: <Color>[
+            Colors.black.withAlpha(180),
+            Colors.black.withAlpha(0)
+          ],
+        )
+      ),
     );
   }
 }

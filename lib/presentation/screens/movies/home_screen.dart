@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/providers/movies/movies_providers.dart';
 import 'package:movies/presentation/widgets/movies/main_posters_carousel.dart';
+import 'package:movies/presentation/widgets/movies/movies_cards_list.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -61,32 +62,52 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         ),
 
         const SliverToBoxAdapter(
-          child: Placeholder(
-            color: Colors.white,
-          )
+          child: SizedBox(
+            height: 10,
+          ),
         ),
 
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if( index == nowPlayingMovies.length ) {
-                return const SizedBox(height: 10);
-              }
-              return Container(
-                color: colors.onPrimary,
-                height: 80,
-                child: Center(
-                  child: Text(
-                    nowPlayingMovies[index].title, 
-                    style: TextStyle( color: colors.onPrimaryContainer ),
-                  )
-                )
-              );
-            },
-            childCount: nowPlayingMovies.length + 1,
-          )
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: MoviesCardsList(
+              listTitle: 'Now Playing',
+              colors: colors, 
+              movies: nowPlayingMovies,
+              horizontalPadding: 12,
+            ),
+          ),
         ),
 
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: MoviesCardsList(
+              listTitle: 'Upcoming',
+              colors: colors, 
+              movies: nowPlayingMovies,
+              horizontalPadding: 12,
+            ),
+          ),
+        ),
+
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: MoviesCardsList(
+              listTitle: 'Most Popular',
+              colors: colors, 
+              movies: nowPlayingMovies,
+              horizontalPadding: 12,
+            ),
+          ),
+        ),
+
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 10,
+          ),
+        ),
 
       ],
     );
