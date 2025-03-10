@@ -39,6 +39,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
     ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
     ref.read( popularMoviesProvider.notifier ).loadNextPage();
+    ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
   }
 
   @override
@@ -46,6 +47,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
     final List<Movie> nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
     final List<Movie> popularMovies = ref.watch( popularMoviesProvider );
+    final List<Movie> upcomingMovies = ref.watch( upcomingMoviesProvider );
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return CustomScrollView(
@@ -90,8 +92,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
             child: MoviesCardsList(
               listTitle: 'Upcoming',
               colors: colors, 
-              movies: nowPlayingMovies,
+              movies: upcomingMovies,
               horizontalPadding: 10,
+              loadMoreMovies: () {
+                ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
+              },
             ),
           ),
         ),

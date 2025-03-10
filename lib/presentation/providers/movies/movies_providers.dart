@@ -31,6 +31,16 @@ final popularMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>
 });
 
 
+final upcomingMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref){
+
+  final fetchMoreMovies = ref.watch( moviesRepositoryProvider ).executeGetUpcoming;
+
+  return MoviesNotifier(
+    fetchMoreMovies: fetchMoreMovies
+  );
+});
+
+
 /// creamos el tipo de funcion que queremos recibir en el provider
 /// es decir, con esto indicamos el qe provider debe tener una future function
 /// que regrese un listado de movies y que reciba un parametro int
