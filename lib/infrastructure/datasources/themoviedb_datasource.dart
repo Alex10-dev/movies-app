@@ -21,7 +21,11 @@ class ThemoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
 
-    final response = await dio.get('/movie/now_playing');
+    final response = await dio.get('/movie/now_playing', 
+      queryParameters: {
+        'page': page
+      }
+    );
     
     //este fromJson es del objeto que obtuvimos de quicktype io, tal cual nos responde el api
     final TheMovieDbResponse theMovieDBResponse = TheMovieDbResponse.fromJson( response.data );
