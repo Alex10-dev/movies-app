@@ -21,7 +21,11 @@ class ThemoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
 
-    final response = await dio.get('/movie/now_playing');
+    final response = await dio.get('/movie/now_playing', 
+      queryParameters: {
+        'page': page
+      }
+    );
     
     //este fromJson es del objeto que obtuvimos de quicktype io, tal cual nos responde el api
     final TheMovieDbResponse theMovieDBResponse = TheMovieDbResponse.fromJson( response.data );
@@ -29,6 +33,47 @@ class ThemoviedbDatasource extends MoviesDatasource {
     //recorremos cada elemento de la respuesta http y usamos el mapper para pasar la info
     //a nuestra entidad particular
     final List<Movie> movies = theMovieDBResponse.results.map(
+      (moviedb) => MovieMapper.movieDBToEntity(moviedb)
+    ).toList();
+
+    return movies;
+  }
+  
+  @override
+  Future<List<Movie>> getPopular({int page = 1}) async{
+    final response = await dio.get('/movie/popular', 
+      queryParameters: {
+        'page': page
+      }
+    );
+    
+    //este fromJson es del objeto que obtuvimos de quicktype io, tal cual nos responde el api
+    final TheMovieDbResponse theMovieDBResponse = TheMovieDbResponse.fromJson( response.data );
+
+    //recorremos cada elemento de la respuesta http y usamos el mapper para pasar la info
+    //a nuestra entidad particular
+    final List<Movie> movies = theMovieDBResponse.results
+    .where((moviedb) => moviedb.posterPath != 'no-poster')
+    .map(
+      (moviedb) => MovieMapper.movieDBToEntity(moviedb)
+    ).toList();
+
+    return movies;
+  }
+  
+  @override
+  Future<List<Movie>> getUpcoming({ int page = 1 }) async{
+    final response = await dio.get('/movie/upcoming', 
+      queryParameters: {
+        'page': page
+      }
+    );
+    
+    final TheMovieDbResponse theMovieDBResponse = TheMovieDbResponse.fromJson( response.data );
+
+    final List<Movie> movies = theMovieDBResponse.results
+    .where((moviedb) => moviedb.posterPath != 'no-poster')
+    .map(
       (moviedb) => MovieMapper.movieDBToEntity(moviedb)
     ).toList();
 

@@ -5,11 +5,13 @@ class MovieCard extends StatelessWidget {
 
   final Movie movie;
   final double? leftMargin;
+  final double? rightMargin;
 
   const MovieCard({
     super.key,
     required this.movie,
-    this.leftMargin = 10,
+    this.leftMargin = 5,
+    this.rightMargin = 5,
   });
 
   @override
@@ -22,7 +24,7 @@ class MovieCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8)
       ),
-      margin: EdgeInsets.only(left: leftMargin!, right: 0, top: 5, bottom: 5),
+      margin: EdgeInsets.only(left: leftMargin!, right: rightMargin!),
       width: 160,
       height: 280,
       child: Column(
