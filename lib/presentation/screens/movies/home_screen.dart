@@ -38,12 +38,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     super.initState();
 
     ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+    ref.read( popularMoviesProvider.notifier ).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
 
     final List<Movie> nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
+    final List<Movie> popularMovies = ref.watch( popularMoviesProvider );
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return CustomScrollView(
@@ -100,8 +102,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
             child: MoviesCardsList(
               listTitle: 'Most Popular',
               colors: colors, 
-              movies: nowPlayingMovies,
+              movies: popularMovies,
               horizontalPadding: 10,
+              loadMoreMovies: () {
+                ref.read( popularMoviesProvider.notifier).loadNextPage();
+              },
             ),
           ),
         ),

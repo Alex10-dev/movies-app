@@ -38,7 +38,7 @@ class _MoviesCardsListState extends State<MoviesCardsList> {
       if( widget.loadMoreMovies == null ) return;
 
       if( (scrollController.position.pixels + 50) >= scrollController.position.maxScrollExtent ){
-        print('Load more movies');
+        // print('Load more movies');
         widget.loadMoreMovies!();
       }
     });
