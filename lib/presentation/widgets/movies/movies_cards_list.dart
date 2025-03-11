@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/widgets/movies/movie_card.dart';
+import 'package:movies/presentation/widgets/movies/movie_info_modal.dart';
 
 class MoviesCardsList extends StatefulWidget {
 
@@ -87,15 +88,17 @@ class _MoviesCardsListState extends State<MoviesCardsList> {
                 if( index == 0 ) {
                   leftMargin = widget.horizontalPadding!;
                 } 
-
                 if( index == widget.movies.length - 1) {
                   rightMargin = widget.horizontalPadding!;
                 } 
 
-                return MovieCard(
+                return MovieInfoModal(
                   movie: widget.movies[index],
-                  leftMargin: leftMargin,
-                  rightMargin: rightMargin,
+                  child: MovieCard(
+                    movie: widget.movies[index],
+                    leftMargin: leftMargin,
+                    rightMargin: rightMargin,
+                  ),
                 );
               },
             ),
