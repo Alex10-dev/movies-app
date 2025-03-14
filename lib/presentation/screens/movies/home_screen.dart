@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/providers/movies/initial_loading_provider.dart';
 import 'package:movies/presentation/providers/movies/movies_providers.dart';
+import 'package:movies/presentation/utils/show_movie_modal.dart';
 import 'package:movies/presentation/widgets/movies/main_posters_carousel.dart';
 import 'package:movies/presentation/widgets/movies/movies_cards_list.dart';
 import 'package:movies/presentation/widgets/shared/full_screen_loader.dart';
@@ -12,7 +13,9 @@ class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
 
-  const HomeScreen({super.key});
+  final String? movieId;
+
+  const HomeScreen({super.key, this.movieId});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +24,16 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.primary,
-      body: const _HomeView()
+      body: _HomeView(movieId),
     );
   }
 }
 
 class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+
+  final String? movieId;
+
+  const _HomeView(this.movieId);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -42,6 +48,17 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
     ref.read( popularMoviesProvider.notifier ).loadNextPage();
     ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if( widget.movieId != null ) {
+      Future.microtask(() {
+        if( !mounted ) return;
+        showMovieModal(widget.movieId!, context);
+      });
+    }
   }
 
   @override

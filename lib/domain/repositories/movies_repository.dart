@@ -8,4 +8,6 @@ abstract class MoviesRepository {
   Future<List<Movie>> getPopular({ int page = 1 });
 
   Future<List<Movie>> executeGetUpcoming({ int page = 1 });
+
+  Future<Movie> executeGetMovieById({ required String id });
 }

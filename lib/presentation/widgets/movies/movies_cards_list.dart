@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/widgets/movies/movie_card.dart';
-import 'package:movies/presentation/widgets/movies/movie_info_modal.dart';
 
 class MoviesCardsList extends StatefulWidget {
 
@@ -92,8 +92,10 @@ class _MoviesCardsListState extends State<MoviesCardsList> {
                   rightMargin = widget.horizontalPadding!;
                 } 
 
-                return MovieInfoModal(
-                  movie: widget.movies[index],
+                return GestureDetector(
+                  onTap: () {
+                    context.push('/movie/${widget.movies[index].id}');
+                  },
                   child: MovieCard(
                     movie: widget.movies[index],
                     leftMargin: leftMargin,
