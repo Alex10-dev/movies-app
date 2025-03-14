@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/presentation/providers/actors/movie_actors_provider.dart';
 import 'package:movies/presentation/providers/movies/movie_detail_provider.dart';
 import 'package:movies/presentation/widgets/movies/movie_info.dart';
 
@@ -24,12 +26,14 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
     super.initState();
 
     ref.read( movieInfoProvider.notifier ).loadMovie( widget.movieId );
+    ref.read( movieActorsProvider.notifier ).loadMovieActors( widget.movieId );
   }
 
   @override
   Widget build(BuildContext context) {
 
     final Movie? movie = ref.watch( movieInfoProvider )[widget.movieId];
+    final List<Actor>? actors = ref.watch( movieActorsProvider )[widget.movieId];
 
     if( movie == null ) {
       return const Center(child: CircularProgressIndicator(),);
@@ -51,7 +55,10 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
               ),
             ),
 
-            _MovieTabsContainer(movie: movie),
+            _MovieTabsContainer(
+              movie: movie,
+              actors: actors!.isEmpty ? [] : actors,
+            ),
 
           ],
         )
@@ -64,9 +71,11 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
 class _MovieTabsContainer extends StatelessWidget {
 
   final Movie movie;
+  final List<Actor> actors;
 
   const _MovieTabsContainer({
-    required this.movie,
+    required this.movie, 
+    required this.actors,
   });
 
   @override
@@ -92,7 +101,10 @@ class _MovieTabsContainer extends StatelessWidget {
                 child: TabBarView(
                   children: <Widget>[
                     SingleChildScrollView(
-                      child: MovieInfo( movie: movie,),
+                      child: MovieInfo( 
+                        movie: movie,
+                        actors: actors,
+                      ),
                     ),
                     const Center(child: Text('Information 2')),
                   ],

@@ -29,7 +29,7 @@ class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
 
   Future<void> loadMovie( String movieId ) async {
     if( state[movieId] != null ) return;
-    print('obteniendo detalles de pelicula');
+    // print('obteniendo detalles de pelicula');
     final movie = await getMovie(id: movieId);
 
     state = {...state, movieId: movie};

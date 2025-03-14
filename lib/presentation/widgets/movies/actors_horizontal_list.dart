@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/presentation/widgets/movies/movie_actor_card.dart';
 
 class ActorsHorizontalList extends StatelessWidget {
-  const ActorsHorizontalList({super.key});
+
+  final List<Actor> actors;
+
+  const ActorsHorizontalList({super.key, required this.actors});
 
   @override
   Widget build(BuildContext context) {
@@ -21,30 +25,15 @@ class ActorsHorizontalList extends StatelessWidget {
           color: Colors.red,
           padding: const EdgeInsets.symmetric(vertical: 0),
           height: 160,
-          child: ListView(
+          child: ListView.builder(
+            itemCount: actors.length,
             scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-                child: const MovieActorCard()
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-                child: const MovieActorCard()
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-                child: const MovieActorCard()
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-                child: const MovieActorCard()
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-                child: const MovieActorCard()
-              ),
-            ],
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsetsDirectional.symmetric(horizontal: 6),
+                child: MovieActorCard( imageUrl: actors[index].profilePath )
+              );
+            },
           ),
         ),
       ],

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
 class MovieActorCard extends StatelessWidget {
+
+  final String? imageUrl;
+
   const MovieActorCard({
-    super.key,
+    super.key, 
+    this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 140,
-      child: Placeholder(),
+      child: Image.network(
+        imageUrl == '' ? 'https://picsum.photos/250?image=9' : imageUrl!,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

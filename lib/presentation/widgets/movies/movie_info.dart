@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/widgets/movies/actors_horizontal_list.dart';
 
@@ -6,9 +7,12 @@ import 'package:movies/presentation/widgets/movies/actors_horizontal_list.dart';
 class MovieInfo extends StatelessWidget {
 
   final Movie movie;
+  final List<Actor> actors;
 
   const MovieInfo({
-    super.key, required this.movie,
+    super.key, 
+    required this.movie, 
+    required this.actors,
   });
 
   @override
@@ -34,7 +38,7 @@ class MovieInfo extends StatelessWidget {
             ],
           )
         ),
-        const ActorsHorizontalList(),
+        ActorsHorizontalList( actors: actors ),
       ],
     );
   }
