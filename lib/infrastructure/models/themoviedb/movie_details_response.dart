@@ -7,7 +7,7 @@ class MovieDetailsResponse {
     final List<Genre> genres;
     final String homepage;
     final int id;
-    final String imdbId;
+    final String? imdbId;
     final List<String> originCountry;
     final String originalLanguage;
     final String originalTitle;
@@ -35,7 +35,7 @@ class MovieDetailsResponse {
         required this.genres,
         required this.homepage,
         required this.id,
-        required this.imdbId,
+        this.imdbId,
         required this.originCountry,
         required this.originalLanguage,
         required this.originalTitle,
@@ -68,9 +68,9 @@ class MovieDetailsResponse {
         originCountry: List<String>.from(json["origin_country"].map((x) => x)),
         originalLanguage: json["original_language"],
         originalTitle: json["original_title"],
-        overview: json["overview"],
+        overview: json["overview"] ?? '',
         popularity: json["popularity"]?.toDouble(),
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? '',
         productionCompanies: List<ProductionCompany>.from(json["production_companies"].map((x) => ProductionCompany.fromJson(x))),
         productionCountries: List<ProductionCountry>.from(json["production_countries"].map((x) => ProductionCountry.fromJson(x))),
         releaseDate: DateTime.parse(json["release_date"]),
@@ -80,7 +80,7 @@ class MovieDetailsResponse {
         status: json["status"],
         tagline: json["tagline"],
         title: json["title"],
-        video: json["video"],
+        video: json["video"] ?? '',
         voteAverage: json["vote_average"],
         voteCount: json["vote_count"],
     );

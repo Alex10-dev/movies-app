@@ -5,6 +5,7 @@ import 'package:movies/domain/datasources/movies_datasource.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/infrastructure/mappers/movie_mapper.dart';
 import 'package:movies/infrastructure/models/themoviedb/movie_details_response.dart';
+import 'package:movies/infrastructure/models/themoviedb/recommended_movies_response.dart';
 import 'package:movies/infrastructure/models/themoviedb/themoviedb_response.dart';
 
 class ThemoviedbDatasource extends MoviesDatasource {
@@ -93,5 +94,25 @@ class ThemoviedbDatasource extends MoviesDatasource {
 
     return movie;
   }
+  
+  @override
+  Future<List<Movie>> getRelatedMovies({int page = 1, String id = '1000'}) async{
+    final response = await dio.get('/movie/$id/recommendations', 
+      queryParameters: {
+        'page': page
+      }
+    );
+
+    final RecommendedMoviesResponse recommendedMoviesResponse = RecommendedMoviesResponse.fromJson( response.data );
+
+    final List<Movie> movies = recommendedMoviesResponse.results
+    .map(
+      (movieDb) => MovieMapper.movieDBToEntity(movieDb)
+    ).toList();
+
+    return movies;
+  }
+  
+  
 
 }

@@ -10,4 +10,6 @@ abstract class MoviesRepository {
   Future<List<Movie>> executeGetUpcoming({ int page = 1 });
 
   Future<Movie> executeGetMovieById({ required String id });
+
+  Future<List<Movie>> executeGetRelatedMovies({ int page = 1, String id  = '1000' });
 }
