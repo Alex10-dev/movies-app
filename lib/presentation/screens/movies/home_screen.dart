@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/presentation/providers/movies/current_movie_on_carousel_provider.dart';
 import 'package:movies/presentation/providers/movies/initial_loading_provider.dart';
 import 'package:movies/presentation/providers/movies/movies_providers.dart';
 import 'package:movies/presentation/utils/show_movie_modal.dart';
@@ -70,6 +71,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final List<Movie> nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
     final List<Movie> popularMovies = ref.watch( popularMoviesProvider );
     final List<Movie> upcomingMovies = ref.watch( upcomingMoviesProvider );
+    final int carouselIndex = ref.watch( currentMovieOnCarouselProvider );
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Stack(
@@ -85,7 +87,10 @@ class _HomeViewState extends ConsumerState<_HomeView> {
               expandedHeight: 650,
               flexibleSpace: FlexibleSpaceBar(
                 title: const Text('Información', style: TextStyle(color: Colors.white),),
-                background: MainPostersCarousel(nowPlayingMovies: nowPlayingMovies),
+                background: MainPostersCarousel(
+                  nowPlayingMovies: nowPlayingMovies,
+                  index: carouselIndex,
+                ),
               ),
             ),
 

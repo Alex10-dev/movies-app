@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/presentation/providers/movies/current_movie_on_carousel_provider.dart';
 
-class Carousel extends StatefulWidget {
+class Carousel extends ConsumerStatefulWidget {
 
   final List<Movie> movies; 
 
@@ -11,10 +13,10 @@ class Carousel extends StatefulWidget {
   });
 
   @override
-  State<Carousel> createState() => _CarouselState();
+  CarouselState createState() => CarouselState();
 }
 
-class _CarouselState extends State<Carousel> {
+class CarouselState extends ConsumerState<Carousel> {
 
   final PageController _pageController = PageController(
     viewportFraction: 0.75,
@@ -25,6 +27,9 @@ class _CarouselState extends State<Carousel> {
     return PageView.builder(
       controller: _pageController,
       itemCount: widget.movies.length,
+      onPageChanged: (value) {
+        ref.read( currentMovieOnCarouselProvider.notifier ).updateCurrentMovie(value);
+      },
       itemBuilder: (context, index) {
         return AnimatedBuilder(
           animation: _pageController,
