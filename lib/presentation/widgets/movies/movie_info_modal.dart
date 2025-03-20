@@ -6,6 +6,7 @@ import 'package:movies/presentation/providers/actors/movie_actors_provider.dart'
 import 'package:movies/presentation/providers/movies/movie_detail_provider.dart';
 import 'package:movies/presentation/providers/movies/related_movies_provider.dart';
 import 'package:movies/presentation/widgets/movies/movie_info.dart';
+import 'package:movies/presentation/widgets/movies/movies_grid.dart';
 
 class MovieInfoModal extends ConsumerStatefulWidget {
 
@@ -86,18 +87,29 @@ class _MovieTabsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Expanded(
       child: Container(
-        color: Colors.transparent,
+        color: colors.primary,
         child: DefaultTabController(
           initialIndex: 0,
           length: 3,
           child: Column(
             children: <Widget>[
           
-              const TabBar(
-                indicatorColor: Colors.black,
-                tabs: <Tab>[
+              TabBar(
+                indicatorColor: colors.surface,
+                labelColor: colors.surface,
+                unselectedLabelColor: colors.outlineVariant,
+                dividerColor: Colors.transparent,
+                dividerHeight: 10.4,
+                indicatorWeight: 4,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorAnimation: TabIndicatorAnimation.elastic,
+                textScaler: const TextScaler.linear(1.2),
+                tabs: const <Tab>[
                   Tab(text: 'Información'),
                   Tab(text: 'Sugerencias'),
                   Tab(text: 'Entradas'),
@@ -113,14 +125,7 @@ class _MovieTabsContainer extends StatelessWidget {
                         actors: actors,
                       ),
                     ),
-                    Center(
-                      child: ListView.builder(
-                        itemCount: relatedMovies.length,
-                        itemBuilder: (context, index) {
-                          return Text(  relatedMovies[index].title );
-                        },
-                      )
-                    ),
+                    MoviesGrid(movies: relatedMovies),
                     const Center(child: Text('Information 2')),
                   ],
                 ),
@@ -132,3 +137,4 @@ class _MovieTabsContainer extends StatelessWidget {
     );
   }
 }
+

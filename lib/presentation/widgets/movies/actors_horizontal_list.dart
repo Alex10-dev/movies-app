@@ -5,32 +5,46 @@ import 'package:movies/presentation/widgets/movies/movie_actor_card.dart';
 class ActorsHorizontalList extends StatelessWidget {
 
   final List<Actor> actors;
+  final double? horizontalPadding;
 
-  const ActorsHorizontalList({super.key, required this.actors});
+  const ActorsHorizontalList({super.key, required this.actors, this.horizontalPadding = 0});
 
   @override
   Widget build(BuildContext context) {
+
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Padding(
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 12),
+        Padding(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
           child: Text(
             'Actores',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colors.onPrimary),
           ),
         ),
         const SizedBox(height: 12),
         Container(
-          color: Colors.red,
           padding: const EdgeInsets.symmetric(vertical: 0),
           height: 160,
           child: ListView.builder(
             itemCount: actors.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
+
+              late double leftMargin = 6;
+              late double rightMargin = 6;
+
+              if( index == 0 ) {
+                leftMargin = horizontalPadding!;
+              } 
+              if( index == actors.length - 1) {
+                rightMargin = horizontalPadding!;
+              } 
+
               return Container(
-                margin: const EdgeInsetsDirectional.symmetric(horizontal: 6),
+                margin: EdgeInsetsDirectional.only(start: leftMargin, end: rightMargin),
                 child: MovieActorCard( imageUrl: actors[index].profilePath )
               );
             },

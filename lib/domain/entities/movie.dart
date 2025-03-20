@@ -13,6 +13,9 @@ class Movie {
   final bool hasVideo;
   final double voteAverage;
   final int voteCount;
+  final int? runtime;
+  final int? revenue;
+  final int? budget;
 
   Movie({
     required this.isForAdult,
@@ -28,6 +31,9 @@ class Movie {
     required this.title,
     required this.hasVideo,
     required this.voteAverage,
-    required this.voteCount
+    required this.voteCount,
+    this.runtime = 0,
+    this.revenue = 0,
+    this.budget = 0,
   });
 }

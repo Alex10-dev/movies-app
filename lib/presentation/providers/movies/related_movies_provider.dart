@@ -16,8 +16,7 @@ typedef RelatedMoviesCallback = Future<List<Movie>> Function({ int page, String 
 
 class RelatedMoviesNotifier extends StateNotifier<Map<String, List<Movie>>> {
 
-  int currentPage = 0;
-  bool isLoading = false;
+  int currentPage = 1;
   final RelatedMoviesCallback getRelatedMovies;
 
   RelatedMoviesNotifier({
@@ -26,16 +25,12 @@ class RelatedMoviesNotifier extends StateNotifier<Map<String, List<Movie>>> {
 
   Future<void> loadNextPage( String movieId ) async{
 
-    if( isLoading ) return;
-
-    isLoading = true;
-    currentPage++;
+    if( state[movieId] != null ) return;
 
     final List<Movie> movies = await getRelatedMovies(id: movieId, page: currentPage);
 
     state = {...state, movieId: movies};
 
-    await Future.delayed(const Duration(milliseconds: 800));
-    isLoading = false;
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 }
