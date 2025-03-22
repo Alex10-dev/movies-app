@@ -3,8 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:movies/config/constants/enviroments.dart';
 import 'package:movies/domain/datasources/movies_datasource.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/domain/entities/video.dart';
 import 'package:movies/infrastructure/mappers/movie_mapper.dart';
+import 'package:movies/infrastructure/mappers/video_mapper.dart';
 import 'package:movies/infrastructure/models/themoviedb/movie_details_response.dart';
+import 'package:movies/infrastructure/models/themoviedb/movie_video_reponse.dart';
 import 'package:movies/infrastructure/models/themoviedb/recommended_movies_response.dart';
 import 'package:movies/infrastructure/models/themoviedb/themoviedb_response.dart';
 
@@ -116,6 +119,20 @@ class ThemoviedbDatasource extends MoviesDatasource {
     ).toList();
 
     return movies;
+  }
+
+  @override
+  Future<List<Video>> getMovieVideos({required String id}) async{
+    final response = await dio.get('/movie/$id/videos');
+
+    final MovieVideoResponse movieVideosReponse = MovieVideoResponse.fromJson( response.data );
+    
+    final List<Video> videos = movieVideosReponse.results
+    .map(
+      (videoDb) => VideoMapper.videoInfoToEntity( videoDb )
+    ).toList();
+
+    return videos;
   }
   
   

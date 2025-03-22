@@ -1,6 +1,7 @@
 
 import 'package:movies/domain/datasources/movies_datasource.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/domain/entities/video.dart';
 import 'package:movies/domain/repositories/movies_repository.dart';
 
 class MoviesRepositoryImp extends MoviesRepository {
@@ -32,5 +33,10 @@ class MoviesRepositoryImp extends MoviesRepository {
   @override
   Future<List<Movie>> executeGetRelatedMovies({int page = 1, String id = '1000' }) {
     return datasource.getRelatedMovies(id: id, page: page);
+  }
+
+  @override
+  Future<List<Video>> executeGetMovieVideos({required String id}) {
+    return datasource.getMovieVideos(id: id);
   }
 }

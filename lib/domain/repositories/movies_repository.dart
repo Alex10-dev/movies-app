@@ -1,5 +1,6 @@
 
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/domain/entities/video.dart';
 
 abstract class MoviesRepository {
 
@@ -12,4 +13,6 @@ abstract class MoviesRepository {
   Future<Movie> executeGetMovieById({ required String id });
 
   Future<List<Movie>> executeGetRelatedMovies({ int page = 1, String id  = '1000' });
+
+  Future<List<Video>> executeGetMovieVideos({ required String id });
 }

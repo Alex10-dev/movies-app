@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/domain/entities/video.dart';
 import 'package:movies/presentation/providers/actors/movie_actors_provider.dart';
 import 'package:movies/presentation/providers/movies/movie_detail_provider.dart';
+import 'package:movies/presentation/providers/movies/movie_videos_provider.dart';
 import 'package:movies/presentation/providers/movies/related_movies_provider.dart';
 import 'package:movies/presentation/widgets/movies/movie_info.dart';
 import 'package:movies/presentation/widgets/movies/movies_grid.dart';
+import 'package:movies/presentation/widgets/shared/video_player.dart';
 
 class MovieInfoModal extends ConsumerStatefulWidget {
 
@@ -31,6 +34,7 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
     ref.read( movieInfoProvider.notifier ).loadMovie( widget.movieId );
     ref.read( relatedMoviesProvider.notifier ).loadNextPage( widget.movieId );
     ref.read( movieActorsProvider.notifier ).loadMovieActors( widget.movieId );
+    ref.read( movieVideosProvider.notifier ).loadVideos( widget.movieId );
   }
 
   @override
@@ -40,7 +44,9 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
     final List<Actor>? actors = ref.watch( movieActorsProvider )[widget.movieId];
     final List<Movie>? relatedMovies = ref.watch( relatedMoviesProvider )[widget.movieId];
 
-    if( movie == null ) {
+    final List<Video>? videos = ref.watch( movieVideosProvider )[widget.movieId];
+
+    if( movie == null || videos == null) {
       return const Center(child: CircularProgressIndicator(),);
     }
 
@@ -53,27 +59,10 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: <Widget>[
-                      
-              Container(
-                color: Colors.black,
-                height: 320,
-                width: double.infinity,
-                child: Image.network(
-                  movie.backdropLink,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if( loadingProgress != null ) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      );
-                    }
 
-                    return child;
-                  },
-                ),
-              ),
+              videos.isNotEmpty
+              ? VideoPlayerAsset(url: videos[0].url) 
+              : _MoviePosterNoVideo( url: movie.backdropLink),
                       
               _MovieTabsContainer(
                 movie: movie,
@@ -85,6 +74,28 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _MoviePosterNoVideo extends StatelessWidget {
+
+  final String url;
+
+  const _MoviePosterNoVideo({ 
+    required this.url,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+      color: Colors.orange,
+      height: 320,
+      width: double.infinity,
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+      )
     );
   }
 }
