@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/providers/actors/movie_actors_provider.dart';
@@ -43,34 +44,80 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
       return const Center(child: CircularProgressIndicator(),);
     }
 
-    return Stack(
-      children: <Widget>[
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: const _MovieModalAppbar(),
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: <Widget>[
+                      
+              Container(
+                color: Colors.black,
+                height: 320,
+                width: double.infinity,
+                child: Image.network(
+                  movie.backdropLink,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if( loadingProgress != null ) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      );
+                    }
 
-        Column(
-          children: <Widget>[
-
-            Container(
-              color: Colors.amber,
-              height: 320,
-              width: double.infinity,
-              child: Image.network(
-                movie.backdropLink,
-                fit: BoxFit.cover,
+                    return child;
+                  },
+                ),
               ),
-            ),
+                      
+              _MovieTabsContainer(
+                movie: movie,
+                actors: actors ?? [],
+                relatedMovies: relatedMovies ?? [],
+              ),
+                      
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-            _MovieTabsContainer(
-              movie: movie,
-              actors: actors ?? [],
-              relatedMovies: relatedMovies ?? [],
-            ),
+class _MovieModalAppbar extends StatelessWidget implements PreferredSizeWidget {
+  const _MovieModalAppbar();
 
-          ],
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.transparent,
+      leading: Navigator.of(context).widget.pages.length > 2
+        ? IconButton.filled(
+          onPressed: (){
+            GoRouter.of(context).pop();
+          }, 
+          icon: const Icon(Icons.arrow_back), color: Colors.white,
         )
-
+        : null,
+      actions: <Widget>[
+        IconButton.filled(
+          onPressed: (){
+            GoRouter.of(context).goNamed('home-screen');
+          }, 
+          icon: const Icon(Icons.close_rounded), color: Colors.white,
+        )
       ],
     );
   }
+  
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _MovieTabsContainer extends StatelessWidget {

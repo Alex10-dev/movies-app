@@ -1,6 +1,7 @@
 
 import 'package:go_router/go_router.dart';
 import 'package:movies/presentation/screens/screens.dart';
+import 'package:movies/presentation/widgets/movies/movie_info_modal.dart';
 
 final appRouter = GoRouter(
 
@@ -15,7 +16,7 @@ final appRouter = GoRouter(
           path: 'movie/:id',
           builder: (context, state) {
             final movieId = state.pathParameters['id'] ?? 'no-id';
-            return HomeScreen(movieId: movieId);
+            return MovieInfoModal(movieId: movieId);
           },
         )
       ]

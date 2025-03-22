@@ -5,7 +5,6 @@ import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/providers/movies/current_movie_on_carousel_provider.dart';
 import 'package:movies/presentation/providers/movies/initial_loading_provider.dart';
 import 'package:movies/presentation/providers/movies/movies_providers.dart';
-import 'package:movies/presentation/utils/show_movie_modal.dart';
 import 'package:movies/presentation/widgets/movies/main_posters_carousel.dart';
 import 'package:movies/presentation/widgets/movies/movies_cards_list.dart';
 import 'package:movies/presentation/widgets/shared/full_screen_loader.dart';
@@ -52,7 +51,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   }
 
   @override
-  void didChangeDependencies() {
+  /* void didChangeDependencies() {
     super.didChangeDependencies();
     if( widget.movieId != null ) {
       Future.microtask(() {
@@ -60,7 +59,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         showMovieModal(widget.movieId!, context);
       });
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

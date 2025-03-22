@@ -34,7 +34,10 @@ class ThemoviedbDatasource extends MoviesDatasource {
 
     //recorremos cada elemento de la respuesta http y usamos el mapper para pasar la info
     //a nuestra entidad particular
-    final List<Movie> movies = theMovieDBResponse.results.map(
+    final List<Movie> movies = theMovieDBResponse.results
+    .where((moviedb) => moviedb.posterPath != '')
+    .where((moviedb) => moviedb.backdropPath != '')
+    .map(
       (moviedb) => MovieMapper.movieDBToEntity(moviedb)
     ).toList();
 
@@ -55,7 +58,8 @@ class ThemoviedbDatasource extends MoviesDatasource {
     //recorremos cada elemento de la respuesta http y usamos el mapper para pasar la info
     //a nuestra entidad particular
     final List<Movie> movies = theMovieDBResponse.results
-    .where((moviedb) => moviedb.posterPath != 'no-poster')
+    .where((moviedb) => moviedb.posterPath != '')
+    .where((moviedb) => moviedb.backdropPath != '')
     .map(
       (moviedb) => MovieMapper.movieDBToEntity(moviedb)
     ).toList();
@@ -74,7 +78,8 @@ class ThemoviedbDatasource extends MoviesDatasource {
     final TheMovieDbResponse theMovieDBResponse = TheMovieDbResponse.fromJson( response.data );
 
     final List<Movie> movies = theMovieDBResponse.results
-    .where((moviedb) => moviedb.posterPath != 'no-poster')
+    .where((moviedb) => moviedb.posterPath != '')
+    .where((moviedb) => moviedb.backdropPath != '')
     .map(
       (moviedb) => MovieMapper.movieDBToEntity(moviedb)
     ).toList();
