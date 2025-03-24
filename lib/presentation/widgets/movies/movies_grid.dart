@@ -15,8 +15,8 @@ class MoviesGrid extends StatelessWidget {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 10,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
         mainAxisExtent: 200,
       ),
       clipBehavior: Clip.hardEdge,
