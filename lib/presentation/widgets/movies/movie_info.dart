@@ -65,14 +65,14 @@ class MovieInfo extends StatelessWidget {
                 children: <Widget>[
                   MovieBadge(
                     backgroundColor: colors.primaryContainer,
-                    badgeValue: '${movie.voteAverage} / 10',
+                    badgeValue: '${movie.voteAverage.toStringAsFixed(2)} / 10',
                     badgeTitle: 'Calificación',
                     badgeColor: Colors.yellow.shade700,
                     badgeIcon: Icon(Icons.star_outlined, color: colors.onPrimary, size: 40,),
                   ),
                   MovieBadge(
                     backgroundColor: colors.primaryContainer,
-                    badgeValue: '${movie.popularity}',
+                    badgeValue: movie.popularity.toStringAsFixed(2),
                     badgeTitle: 'Popularidad',
                     badgeColor: Colors.green.shade600,
                     badgeIcon: Icon(Icons.volunteer_activism, color: colors.onPrimary, size: 40,),
@@ -102,7 +102,7 @@ class MovieInfo extends StatelessWidget {
           )
         ),
         ActorsHorizontalList( actors: actors, horizontalPadding: 12 ),
-        const SizedBox(height: 40,)
+        const SizedBox(height: 20,)
       ],
     );
   }

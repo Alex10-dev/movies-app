@@ -27,7 +27,7 @@ class ActorsHorizontalList extends StatelessWidget {
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 0),
-          height: 160,
+          height: 260,
           child: ListView.builder(
             itemCount: actors.length,
             scrollDirection: Axis.horizontal,
@@ -43,9 +43,12 @@ class ActorsHorizontalList extends StatelessWidget {
                 rightMargin = horizontalPadding!;
               } 
 
-              return Container(
+              return MovieActorCard( 
+                imageUrl: actors[index].profilePath,
                 margin: EdgeInsetsDirectional.only(start: leftMargin, end: rightMargin),
-                child: MovieActorCard( imageUrl: actors[index].profilePath )
+                width: 140,
+                actorName: actors[index].name,
+                character: actors[index].character,
               );
             },
           ),
