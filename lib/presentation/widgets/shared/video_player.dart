@@ -59,6 +59,15 @@ class _VideoPlayerAssetState extends State<VideoPlayerAsset> {
 
   }
 
+  // Pausar video cuando la pantalla ya no es la activa
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!ModalRoute.of(context)!.isCurrent) {
+      _controller.pause(); 
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
