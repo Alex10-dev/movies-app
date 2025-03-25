@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/presentation/providers/movies/current_movie_on_carousel_provider.dart';
 import 'package:movies/presentation/providers/movies/initial_loading_provider.dart';
 import 'package:movies/presentation/providers/movies/movies_providers.dart';
 import 'package:movies/presentation/widgets/movies/main_posters_carousel.dart';
@@ -12,7 +13,9 @@ class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
 
-  const HomeScreen({super.key});
+  final String? movieId;
+
+  const HomeScreen({super.key, this.movieId});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +24,16 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.primary,
-      body: const _HomeView()
+      body: _HomeView(movieId),
     );
   }
 }
 
 class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+
+  final String? movieId;
+
+  const _HomeView(this.movieId);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -45,6 +51,17 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   }
 
   @override
+  /* void didChangeDependencies() {
+    super.didChangeDependencies();
+    if( widget.movieId != null ) {
+      Future.microtask(() {
+        if( !mounted ) return;
+        showMovieModal(widget.movieId!, context);
+      });
+    }
+  }*/
+
+  @override
   Widget build(BuildContext context) {
 
     final isLoadingInfo = ref.watch( initialLoadingProvider );
@@ -53,6 +70,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final List<Movie> nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
     final List<Movie> popularMovies = ref.watch( popularMoviesProvider );
     final List<Movie> upcomingMovies = ref.watch( upcomingMoviesProvider );
+    final int carouselIndex = ref.watch( currentMovieOnCarouselProvider );
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Stack(
@@ -68,7 +86,10 @@ class _HomeViewState extends ConsumerState<_HomeView> {
               expandedHeight: 650,
               flexibleSpace: FlexibleSpaceBar(
                 title: const Text('Información', style: TextStyle(color: Colors.white),),
-                background: MainPostersCarousel(nowPlayingMovies: nowPlayingMovies),
+                background: MainPostersCarousel(
+                  nowPlayingMovies: nowPlayingMovies,
+                  index: carouselIndex,
+                ),
               ),
             ),
 

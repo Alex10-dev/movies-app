@@ -5,10 +5,12 @@ import 'package:movies/presentation/widgets/shared/custom_carousel.dart';
 class MainPostersCarousel extends StatelessWidget {
   const MainPostersCarousel({
     super.key,
-    required this.nowPlayingMovies,
+    required this.nowPlayingMovies, 
+    required this.index,
   });
 
   final List<Movie> nowPlayingMovies;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class MainPostersCarousel extends StatelessWidget {
               child: Image.network(
                 nowPlayingMovies.isEmpty 
                   ? 'https://picsum.photos/250?image=9' 
-                  : nowPlayingMovies[7].posterLink, 
+                  : nowPlayingMovies[index].posterLink, 
                 fit: BoxFit.fill,
               ),
             ),

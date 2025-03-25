@@ -42,7 +42,7 @@ class MovieFromMovieDB {
         overview: json["overview"] ?? '',
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"] ?? '',
-        releaseDate: DateTime.parse(json["release_date"]),
+        releaseDate: _parseDateFromJson(json["release_date"]),
         title: json["title"],
         video: json["video"],
         voteAverage: json["vote_average"]?.toDouble(),
@@ -65,4 +65,12 @@ class MovieFromMovieDB {
         "vote_average": voteAverage,
         "vote_count": voteCount,
     };
+
+    static DateTime _parseDateFromJson( String dateString ) {
+      try {
+        return DateTime.parse(dateString);
+      } catch( e ) {
+        return DateTime.now();
+      }
+    }
 }

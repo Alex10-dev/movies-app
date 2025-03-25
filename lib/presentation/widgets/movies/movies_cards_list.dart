@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/widgets/movies/movie_card.dart';
 
@@ -87,15 +88,19 @@ class _MoviesCardsListState extends State<MoviesCardsList> {
                 if( index == 0 ) {
                   leftMargin = widget.horizontalPadding!;
                 } 
-
                 if( index == widget.movies.length - 1) {
                   rightMargin = widget.horizontalPadding!;
                 } 
 
-                return MovieCard(
-                  movie: widget.movies[index],
-                  leftMargin: leftMargin,
-                  rightMargin: rightMargin,
+                return GestureDetector(
+                  onTap: () {
+                    context.push('/movie/${widget.movies[index].id}');
+                  },
+                  child: MovieCard(
+                    movie: widget.movies[index],
+                    leftMargin: leftMargin,
+                    rightMargin: rightMargin,
+                  ),
                 );
               },
             ),
