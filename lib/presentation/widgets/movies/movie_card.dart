@@ -57,7 +57,7 @@ class MovieCard extends StatelessWidget {
                   textAlign: TextAlign.left,
                   movie.title,
                   style: TextStyle(
-                    color: colors.onPrimary,
+                    color: colors.onSurface,
                     fontSize: 14,
                     fontWeight: FontWeight.bold
                   ),
@@ -66,7 +66,7 @@ class MovieCard extends StatelessWidget {
                 Text(
                   "${movie.releaseDate.toString().split(' ')[0]} ${movie.isForAdult ? 'Para Adultos' : 'Todo Publico'}",
                   style: TextStyle(
-                    color: colors.onPrimary.withAlpha(200),
+                    color: colors.onSurface.withAlpha(200),
                     fontSize: 12,
                     fontWeight: FontWeight.normal
                   ),

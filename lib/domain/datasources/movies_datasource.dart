@@ -15,4 +15,6 @@ abstract class MoviesDatasource {
   Future<List<Movie>> getRelatedMovies({ int page = 1, String id = '1000' });
 
   Future<List<Video>> getMovieVideos({ required String id });
+
+  Future<List<Movie>> searchMovies( String query );
 }

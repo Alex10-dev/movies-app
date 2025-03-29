@@ -11,9 +11,7 @@ import 'package:movies/presentation/widgets/shared/full_screen_loader.dart';
 
 class HomeView extends ConsumerStatefulWidget {
 
-  final String? movieId;
-
-  const HomeView({super.key, this.movieId});
+  const HomeView({super.key,});
 
   @override
   HomeViewState createState() => HomeViewState();

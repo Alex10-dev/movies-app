@@ -21,7 +21,7 @@ class ActorsHorizontalList extends StatelessWidget {
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
           child: Text(
             'Actores',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colors.onPrimary),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colors.onSurface),
           ),
         ),
         const SizedBox(height: 12),

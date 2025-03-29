@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:movies/presentation/Views/movies/home_view.dart';
+import 'package:movies/presentation/Views/movies/search_view.dart';
 import 'package:movies/presentation/utils/custom_docked_fab_location.dart';
 import 'package:movies/presentation/widgets/shared/custom_bottom_nav_bar.dart';
 
@@ -8,9 +8,7 @@ class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
 
-  final String? movieId;
-
-  const HomeScreen({super.key, this.movieId});
+  const HomeScreen({super.key,});
 
   double initialOffsetFromCenter({
     required BuildContext context, 
@@ -40,12 +38,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final ColorScheme colors = Theme.of(context).colorScheme;
+    // final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: colors.primary,
-      body: HomeView(movieId: movieId),
+      // backgroundColor: colors.onPrimaryFixed,
       floatingActionButtonLocation: CustomDockedFabLocation(
         adjustmentX: initialOffsetFromCenter(context: context, totalItems: 4, activeItem: 4), 
         adjustmentY: 5
@@ -61,6 +58,9 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.search_outlined, size: 28,),
       ),
       bottomNavigationBar: const CustomButtomNavBar(),
+      // body: const HomeView(),
+      body: const SearchView(),
+      // body: Placeholder(),
     );
   }
 }

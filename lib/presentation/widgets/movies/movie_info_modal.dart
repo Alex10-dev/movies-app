@@ -146,28 +146,28 @@ class _MovieTabsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final ColorScheme colors = Theme.of(context).colorScheme;
+    // final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Expanded(
       child: Container(
-        color: colors.primary,
+        color: Colors.transparent,
         child: DefaultTabController(
           initialIndex: 0,
           length: 3,
           child: Column(
             children: <Widget>[
           
-              TabBar(
-                indicatorColor: colors.surface,
-                labelColor: colors.surface,
-                unselectedLabelColor: colors.outlineVariant,
+              const TabBar(
+                // indicatorColor: colors.surface,
+                // labelColor: colors.surface,
+                // unselectedLabelColor: colors.outlineVariant,
                 dividerColor: Colors.transparent,
                 dividerHeight: 10.4,
                 indicatorWeight: 4,
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicatorAnimation: TabIndicatorAnimation.elastic,
-                textScaler: const TextScaler.linear(1.2),
-                tabs: const <Tab>[
+                textScaler: TextScaler.linear(1.2),
+                tabs: <Tab>[
                   Tab(text: 'Información'),
                   Tab(text: 'Sugerencias'),
                   Tab(text: 'Entradas'),

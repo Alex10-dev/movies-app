@@ -18,7 +18,7 @@ class MoviesCardsList extends StatefulWidget {
     required this.colors,
     required this.movies, 
     required this.listTitle, 
-    this.height = 320,
+    this.height = 330,
     this.horizontalPadding = 10, 
     this.loadMoreMovies,
   });
@@ -67,14 +67,14 @@ class _MoviesCardsListState extends State<MoviesCardsList> {
               overflow: TextOverflow.ellipsis,
               widget.listTitle,
               style: TextStyle(
-                color: widget.colors.onPrimary,
+                color: widget.colors.onSurface,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic
               ),
             ),
           ),
-    
+          const SizedBox(height: 6),
           Expanded(
             child: ListView.builder(
               controller: scrollController,
