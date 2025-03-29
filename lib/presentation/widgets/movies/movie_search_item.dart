@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movies/domain/entities/movie.dart';
 
 class MovieSearchItem extends StatelessWidget {
@@ -18,12 +19,18 @@ class MovieSearchItem extends StatelessWidget {
       height: 90,
       child: InkWell(
         onTap: () {
+          // context.push('/movie/${widget.movies[index].id}');
+          context.push('/movie/${searchMovie.id}');
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             children: [
-              SizedBox(
+              Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8)
+                ),
                 height: double.infinity,
                 width: 150,
                 child: Image.network(
