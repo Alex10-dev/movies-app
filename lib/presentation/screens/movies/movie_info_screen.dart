@@ -12,20 +12,20 @@ import 'package:movies/presentation/widgets/movies/movie_info.dart';
 import 'package:movies/presentation/widgets/movies/movies_grid.dart';
 import 'package:movies/presentation/widgets/shared/video_player.dart';
 
-class MovieInfoModal extends ConsumerStatefulWidget {
+class MovieInfoScreen extends ConsumerStatefulWidget {
 
   final String movieId;
 
-  const MovieInfoModal({
+  const MovieInfoScreen({
     super.key,
     required this.movieId,
   });
 
   @override
-  MovieInfoModalState createState() => MovieInfoModalState();
+  MovieInfoScreenState createState() => MovieInfoScreenState();
 }
 
-class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
+class MovieInfoScreenState extends ConsumerState<MovieInfoScreen> {
 
   @override
   void initState() {
@@ -146,28 +146,28 @@ class _MovieTabsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final ColorScheme colors = Theme.of(context).colorScheme;
+    // final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Expanded(
       child: Container(
-        color: colors.primary,
+        color: Colors.transparent,
         child: DefaultTabController(
           initialIndex: 0,
           length: 3,
           child: Column(
             children: <Widget>[
           
-              TabBar(
-                indicatorColor: colors.surface,
-                labelColor: colors.surface,
-                unselectedLabelColor: colors.outlineVariant,
+              const TabBar(
+                // indicatorColor: colors.surface,
+                // labelColor: colors.surface,
+                // unselectedLabelColor: colors.outlineVariant,
                 dividerColor: Colors.transparent,
                 dividerHeight: 10.4,
                 indicatorWeight: 4,
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicatorAnimation: TabIndicatorAnimation.elastic,
-                textScaler: const TextScaler.linear(1.2),
-                tabs: const <Tab>[
+                textScaler: TextScaler.linear(1.2),
+                tabs: <Tab>[
                   Tab(text: 'Información'),
                   Tab(text: 'Sugerencias'),
                   Tab(text: 'Entradas'),

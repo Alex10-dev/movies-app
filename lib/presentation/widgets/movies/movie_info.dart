@@ -39,21 +39,21 @@ class MovieInfo extends StatelessWidget {
 
               Text( 
                 movie.title,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colors.onPrimary),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colors.onSurface),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.calendar_month_outlined, color: colors.outlineVariant, size: 16,),
+                  Icon(Icons.calendar_month_outlined, color: colors.outline, size: 16,),
                   Text(
                     movie.releaseDate.toString().split(' ')[0],
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outlineVariant),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outline),
                   ),
                   const SizedBox(width: 6),
-                  Icon(Icons.timer_outlined, color: colors.outlineVariant, size: 16),
+                  Icon(Icons.timer_outlined, color: colors.outline, size: 16),
                   Text( 
                     _formatMovieDuration(movie.runtime!),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outlineVariant),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outline),
                   ),
                 ],
               ),
@@ -91,12 +91,12 @@ class MovieInfo extends StatelessWidget {
 
               Text(
                 'Sinopsis', 
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colors.onPrimary)
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colors.onSurface)
               ),
               const SizedBox(height: 12),
               Text(
                 movie.overview,
-                style: TextStyle(fontSize: 16, color: colors.surface),
+                style: TextStyle(fontSize: 16, color: colors.onSurface),
               )
             ],
           )
@@ -126,6 +126,9 @@ class MovieBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Container(
       width: 110,
       height: 130,
@@ -167,11 +170,11 @@ class MovieBadge extends StatelessWidget {
           const SizedBox(height: 8,),
           Text(
             badgeValue,
-            style: const TextStyle( fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white ),
+            style: TextStyle( fontSize: 16, fontWeight: FontWeight.bold, color: colors.onSurface ),
           ),
           Text(
             badgeTitle!,
-            style: TextStyle( fontSize: 14, color: Colors.white.withAlpha(150)),
+            style: TextStyle( fontSize: 14, color: colors.outline ),
           ),
         ],
       ),
