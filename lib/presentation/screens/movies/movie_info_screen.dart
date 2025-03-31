@@ -12,20 +12,20 @@ import 'package:movies/presentation/widgets/movies/movie_info.dart';
 import 'package:movies/presentation/widgets/movies/movies_grid.dart';
 import 'package:movies/presentation/widgets/shared/video_player.dart';
 
-class MovieInfoModal extends ConsumerStatefulWidget {
+class MovieInfoScreen extends ConsumerStatefulWidget {
 
   final String movieId;
 
-  const MovieInfoModal({
+  const MovieInfoScreen({
     super.key,
     required this.movieId,
   });
 
   @override
-  MovieInfoModalState createState() => MovieInfoModalState();
+  MovieInfoScreenState createState() => MovieInfoScreenState();
 }
 
-class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
+class MovieInfoScreenState extends ConsumerState<MovieInfoScreen> {
 
   @override
   void initState() {

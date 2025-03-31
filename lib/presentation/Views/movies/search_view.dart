@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
 import 'package:movies/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:movies/presentation/widgets/movies/movie_search_item.dart';
+import 'package:movies/presentation/widgets/movies/previous_movies_searched.dart';
 
 class SearchView extends ConsumerStatefulWidget {
 
@@ -58,7 +59,7 @@ class SearchViewState extends ConsumerState<SearchView> {
             child: AnimatedOpacity(
               opacity: _mainOpacity,
               duration: _animationDuration,
-              child: const MainContainer()
+              child: const PreviousMoviesSearched()
             ),
           ),
       
@@ -223,16 +224,4 @@ class SearchViewState extends ConsumerState<SearchView> {
     );
   }
   
-}
-
-
-class MainContainer extends StatelessWidget {
-  const MainContainer({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
 }
