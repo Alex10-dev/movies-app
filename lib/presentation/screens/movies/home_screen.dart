@@ -43,6 +43,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
       // backgroundColor: colors.onPrimaryFixed,
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: CustomDockedFabLocation(
         adjustmentX: initialOffsetFromCenter(context: context, totalItems: 4, activeItem: 4), 
         adjustmentY: 5
