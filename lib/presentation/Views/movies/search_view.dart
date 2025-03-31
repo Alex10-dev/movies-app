@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/movie.dart';
@@ -21,12 +23,21 @@ class SearchViewState extends ConsumerState<SearchView> {
   final FocusNode _focusNode = FocusNode();
   final Duration _animationDuration = const Duration(milliseconds: 150);
 
+  Timer? _debounceTimer;
+
   bool _isSearching = false;
   Color cancelIconColor = Colors.grey;
   double _opacity = 0.0;
   double _mainOpacity = 1.0;
 
   List<Movie> searchMovies = [];
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _inputController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +61,13 @@ class SearchViewState extends ConsumerState<SearchView> {
             ),
           ),
       
-          if( _isSearching == true )
+          if( _isSearching )
             Positioned.fill(
               child: AnimatedOpacity(
                 opacity: _opacity,
                 duration: _animationDuration,
                 child: Container(
-                  child: _inputController.text.isEmpty
+                  child: ( _inputController.text.isEmpty )
                     ? _buildSuggestions()
                     : _buildResults()
                 ),
@@ -67,14 +78,32 @@ class SearchViewState extends ConsumerState<SearchView> {
     );
   }
 
+  void _onQueryChanged( String value ){
+    // print('query string cambio');
+    if( _debounceTimer?.isActive ?? false ) _debounceTimer!.cancel();
+
+    _debounceTimer = Timer(const Duration(milliseconds: 250), () async{
+      // print('Buscando Debounce');
+      if( value.isEmpty ) {
+        setState(() {
+          searchMovies = [];
+        });
+        return;
+      }
+      searchMovies = await ref.read( moviesRepositoryProvider ).executeSearchMovies(value);
+      setState(() {});
+    });
+  }
+
   void toggleSearch(bool start) {
     if( _isSearching && start ) return;
     if( !_isSearching && !start ) return;
 
     if( !_isSearching ) { // start search
       _isSearching = true;
-      _opacity = 0.0;
+      _opacity = 0.1;
       _mainOpacity = 1.0;
+      _focusNode.requestFocus();
     } else { // end search
       _opacity = 0.0;
       _inputController.clear();
@@ -111,11 +140,13 @@ class SearchViewState extends ConsumerState<SearchView> {
         controller: _inputController,
         focusNode: _focusNode,
         onTap: () => toggleSearch(true),
-        onChanged: (value) async{
-          print('buscando');
-          searchMovies = await ref.read( moviesRepositoryProvider ).executeSearchMovies(value);
-          setState(() {});
-        },
+        onChanged: (value) => _onQueryChanged(value),
+        autofocus: false,
+        enableInteractiveSelection: false,
+        autocorrect: false,
+        enableSuggestions: false,
+        keyboardType: TextInputType.text,
+        // textInputAction: TextInputAction.done,
         cursorHeight: 16,
         minLines: 1,
         maxLines: 1,
@@ -146,6 +177,9 @@ class SearchViewState extends ConsumerState<SearchView> {
   }
 
   Widget _buildResults() {
+
+    // _onQueryChanged();
+
     return ListView.builder(
       itemCount: searchMovies.length,
       itemBuilder: (context, index) => Padding(
@@ -156,6 +190,9 @@ class SearchViewState extends ConsumerState<SearchView> {
   }
 
   Widget _buildSuggestions() {
+
+    // _onQueryChanged();
+
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (context, index) => Material(
@@ -165,7 +202,7 @@ class SearchViewState extends ConsumerState<SearchView> {
           leading: const Icon(Icons.search),
           trailing: GestureDetector(
             onTap: () {
-              print('deleted');
+              // print('deleted');
             },
             child: const Icon(Icons.close_outlined, size: 18)
           ),
