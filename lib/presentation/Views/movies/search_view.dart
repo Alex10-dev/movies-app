@@ -24,6 +24,7 @@ class SearchViewState extends ConsumerState<SearchView> {
   final Duration _animationDuration = const Duration(milliseconds: 150);
 
   Timer? _debounceTimer;
+  bool _isWritting = false;
 
   bool _isSearching = false;
   Color cancelIconColor = Colors.grey;
@@ -80,9 +81,13 @@ class SearchViewState extends ConsumerState<SearchView> {
 
   void _onQueryChanged( String value ){
     // print('query string cambio');
-    if( _debounceTimer?.isActive ?? false ) _debounceTimer!.cancel();
+    if( _debounceTimer?.isActive ?? false ) {
+      _debounceTimer!.cancel();
+      _isWritting = true;
+      setState(() {});
+    }
 
-    _debounceTimer = Timer(const Duration(milliseconds: 250), () async{
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () async{
       // print('Buscando Debounce');
       if( value.isEmpty ) {
         setState(() {
@@ -91,6 +96,7 @@ class SearchViewState extends ConsumerState<SearchView> {
         return;
       }
       searchMovies = await ref.read( moviesRepositoryProvider ).executeSearchMovies(value);
+      _isWritting = false;
       setState(() {});
     });
   }
@@ -178,7 +184,11 @@ class SearchViewState extends ConsumerState<SearchView> {
 
   Widget _buildResults() {
 
-    // _onQueryChanged();
+    if( _isWritting ) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return ListView.builder(
       itemCount: searchMovies.length,
@@ -190,8 +200,6 @@ class SearchViewState extends ConsumerState<SearchView> {
   }
 
   Widget _buildSuggestions() {
-
-    // _onQueryChanged();
 
     return ListView.builder(
       itemCount: 10,
