@@ -37,9 +37,12 @@ class CustomButtomNavBar extends StatelessWidget {
                 width: double.infinity,
                 height: double.infinity,
                 child: IconButton(
+
                   tooltip: tab.label,
                   iconSize: 30,
-                  onPressed: () => onTabChanged(tab.route), 
+                  onPressed: !isActive 
+                    ? () => onTabChanged(tab.route)
+                    : null, 
                   icon: Icon(
                     tab.icon,
                     color: isActive ? colors.onSurface : colors.outline,
