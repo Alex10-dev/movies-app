@@ -1,14 +1,17 @@
 
 import 'package:flutter/material.dart';
-import 'package:movies/presentation/Views/movies/search_view.dart';
+import 'package:go_router/go_router.dart';
+import 'package:movies/config/router/app_bottom_tab.dart';
+import 'package:movies/config/router/bottom_tabs_config.dart';
 import 'package:movies/presentation/utils/custom_docked_fab_location.dart';
 import 'package:movies/presentation/widgets/shared/custom_bottom_nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
+  final String page;
 
-  const HomeScreen({super.key,});
+  const HomeScreen({super.key, required this.page});
 
   double initialOffsetFromCenter({
     required BuildContext context, 
@@ -35,17 +38,32 @@ class HomeScreen extends StatelessWidget {
     
   }
 
+  AppBottomTab updateCurrentTab( String page ) {
+    // print(page);
+    return appTabs.firstWhere(
+      (element) => element.route == page,
+      orElse: () => appTabs[0],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
     // final ColorScheme colors = Theme.of(context).colorScheme;
+    // final location = GoRouterState.of(context).matchedLocation;
+    // int currentIndex = 0;
+    AppBottomTab activeTab = updateCurrentTab(page);
 
     return Scaffold(
       extendBody: true,
       // backgroundColor: colors.onPrimaryFixed,
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: CustomDockedFabLocation(
-        adjustmentX: initialOffsetFromCenter(context: context, totalItems: 4, activeItem: 4), 
+        adjustmentX: initialOffsetFromCenter(
+          context: context, 
+          totalItems: appTabs.length, 
+          activeItem: activeTab.index + 1,
+        ), 
         adjustmentY: 5
       ),
       floatingActionButton: FloatingActionButton(
@@ -55,13 +73,23 @@ class HomeScreen extends StatelessWidget {
           // print(MediaQuery.of(context).size.width);
           // Scaffold.geometryOf(context).value;
         },
-        tooltip: 'Search movie',
-        child: const Icon(Icons.search_outlined, size: 28,),
+        tooltip: activeTab.label,
+        child: Icon(activeTab.icon, size: 28,),
       ),
-      bottomNavigationBar: const CustomButtomNavBar(),
+      bottomNavigationBar: CustomButtomNavBar(
+        currentIndex: activeTab.index,
+        onTabChanged: (page) {
+          activeTab = updateCurrentTab(page);
+          context.go('/home/${activeTab.route}');
+        }
+      ),
       // body: const HomeView(),
-      body: const SearchView(),
+      // body: const SearchView(),
       // body: Placeholder(),
+      body: IndexedStack(
+        index: activeTab.index,
+        children: List.generate(appTabs.length, (index) => appTabs[index].view)
+      ),
     );
   }
 }

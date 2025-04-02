@@ -94,7 +94,7 @@ class _MoviesCardsListState extends State<MoviesCardsList> {
 
                 return GestureDetector(
                   onTap: () {
-                    context.push('/movie/${widget.movies[index].id}');
+                    context.push('/home/explore/movie/${widget.movies[index].id}');
                   },
                   child: MovieCard(
                     movie: widget.movies[index],

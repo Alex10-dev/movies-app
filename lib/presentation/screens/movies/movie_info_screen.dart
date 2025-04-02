@@ -119,7 +119,9 @@ class _MovieModalAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton.filled(
           onPressed: (){
-            GoRouter.of(context).goNamed('home-screen');
+            final page = GoRouterState.of(context).pathParameters['page'];
+            // print('page: $page');
+            context.goNamed('home-screen', pathParameters: { 'page': page! });
           }, 
           icon: const Icon(Icons.close_rounded), color: Colors.white,
         )

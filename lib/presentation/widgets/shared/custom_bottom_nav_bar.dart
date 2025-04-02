@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:movies/config/router/bottom_tabs_config.dart';
 
 class CustomButtomNavBar extends StatelessWidget {
+
+  final int currentIndex;
+  final void Function(String) onTabChanged;
+
   const CustomButtomNavBar({
-    super.key,
+    super.key, 
+    required this.currentIndex, 
+    required this.onTabChanged,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    // final ColorScheme colors = Theme.of(context).colorScheme;
+    final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Material(
       color: Colors.transparent,
@@ -20,15 +27,23 @@ class CustomButtomNavBar extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(
+          children: List.generate(appTabs.length, (index){
+
+            final tab = appTabs[index];
+            final isActive = ( index == currentIndex );
+
+            return Expanded(
               child: SizedBox(
                 width: double.infinity,
                 height: double.infinity,
                 child: IconButton(
+                  tooltip: tab.label,
                   iconSize: 30,
-                  onPressed: (){}, 
-                  icon: const Icon(Icons.home_outlined),
+                  onPressed: () => onTabChanged(tab.route), 
+                  icon: Icon(
+                    tab.icon,
+                    color: isActive ? colors.onSurface : colors.outline,
+                  ),
                   style: IconButton.styleFrom(
                     iconSize: 30,
                     shape: const RoundedRectangleBorder(
@@ -37,59 +52,8 @@ class CustomButtomNavBar extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: IconButton(
-                  iconSize: 30,
-                  onPressed: (){}, 
-                  icon: const Icon(Icons.home_outlined),
-                  style: IconButton.styleFrom(
-                    iconSize: 30,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))
-                    )
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: IconButton(
-                  iconSize: 30,
-                  onPressed: (){}, 
-                  icon: const Icon(Icons.home_outlined),
-                  style: IconButton.styleFrom(
-                    iconSize: 30,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))
-                    )
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: IconButton(
-                  iconSize: 30,
-                  onPressed: (){}, 
-                  icon: const Icon(Icons.home_outlined),
-                  style: IconButton.styleFrom(
-                    iconSize: 30,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))
-                    )
-                  ),
-                ),
-              ),
-            ),
-          ],
+            );
+          })
         ),
       ),
     );

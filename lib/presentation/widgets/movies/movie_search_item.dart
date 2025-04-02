@@ -20,7 +20,7 @@ class MovieSearchItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           // context.push('/movie/${widget.movies[index].id}');
-          context.push('/movie/${searchMovie.id}');
+          context.push('/home/search/movie/${searchMovie.id}');
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),

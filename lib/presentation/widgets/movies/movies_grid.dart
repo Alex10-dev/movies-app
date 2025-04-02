@@ -27,7 +27,8 @@ class MoviesGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            GoRouter.of(context).push('/movie/${movies[index].id}');
+            String page = GoRouterState.of(context).pathParameters['page']!;
+            GoRouter.of(context).push('/home/$page/movie/${movies[index].id}');
           },
           child: Container(
             height: double.infinity,
