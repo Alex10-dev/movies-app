@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/domain/entities/movie.dart';
+import 'package:movies/presentation/providers/storage/local_storage.dart';
 import 'package:movies/presentation/widgets/movies/actors_horizontal_list.dart';
 
 
@@ -37,24 +39,39 @@ class MovieInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
-              Text( 
-                movie.title,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colors.onSurface),
-              ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.calendar_month_outlined, color: colors.outline, size: 16,),
-                  Text(
-                    movie.releaseDate.toString().split(' ')[0],
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outline),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text( 
+                          movie.title,
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colors.onSurface),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.calendar_month_outlined, color: colors.outline, size: 16,),
+                            Text(
+                              movie.releaseDate.toString().split(' ')[0],
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outline),
+                            ),
+                            const SizedBox(width: 6),
+                            Icon(Icons.timer_outlined, color: colors.outline, size: 16),
+                            Text( 
+                              _formatMovieDuration(movie.runtime!),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outline),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(width: 6),
-                  Icon(Icons.timer_outlined, color: colors.outline, size: 16),
-                  Text( 
-                    _formatMovieDuration(movie.runtime!),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: colors.outline),
-                  ),
+
+                  FavoriteButton(movie: movie)
+                
                 ],
               ),
 
@@ -104,6 +121,28 @@ class MovieInfo extends StatelessWidget {
         ActorsHorizontalList( actors: actors, horizontalPadding: 12 ),
         const SizedBox(height: 20,)
       ],
+    );
+  }
+}
+
+class FavoriteButton extends ConsumerWidget {
+
+  final Movie movie;
+
+  const FavoriteButton({
+    super.key,
+    required this.movie,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      iconSize: 40,
+      onPressed: (){
+
+        ref.watch( localStorageRepositoryProvider ).executeToggleFavorite(movie);
+      }, 
+      icon: const Icon(Icons.star_border_outlined,)
     );
   }
 }

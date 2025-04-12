@@ -9,7 +9,7 @@ import 'package:movies/presentation/providers/movies/movies_repository_provider.
 /// indicamos en el tipado del provider primero
 /// la clase que controlar el provider y despues el estado
 /// que en este caso es un listado de movie
-/// <MoviesNotifier, List<Movie>
+/// (MoviesNotifier, List(Movie)
 
 final nowPlayingMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref){
 
