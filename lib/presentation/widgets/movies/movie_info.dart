@@ -1,10 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/domain/entities/actor.dart';
 import 'package:movies/domain/entities/movie.dart';
-import 'package:movies/presentation/providers/storage/local_storage.dart';
 import 'package:movies/presentation/widgets/movies/actors_horizontal_list.dart';
+import 'package:movies/presentation/widgets/movies/favorite_movie_button.dart';
 
 
 class MovieInfo extends StatelessWidget {
@@ -125,27 +124,6 @@ class MovieInfo extends StatelessWidget {
   }
 }
 
-class FavoriteButton extends ConsumerWidget {
-
-  final Movie movie;
-
-  const FavoriteButton({
-    super.key,
-    required this.movie,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return IconButton(
-      iconSize: 40,
-      onPressed: (){
-
-        ref.watch( localStorageRepositoryProvider ).executeToggleFavorite(movie);
-      }, 
-      icon: const Icon(Icons.star_border_outlined,)
-    );
-  }
-}
 
 class MovieBadge extends StatelessWidget {
   const MovieBadge({
