@@ -1,4 +1,12 @@
+import 'package:isar/isar.dart';
+
+part 'movie.g.dart';
+
+@collection
 class Movie {
+
+  Id? isarId;
+
   final bool isForAdult;
   final String backdropLink;
   final List<String> genreIds;
