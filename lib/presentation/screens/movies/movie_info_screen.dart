@@ -11,6 +11,7 @@ import 'package:movies/presentation/providers/movies/related_movies_provider.dar
 import 'package:movies/presentation/widgets/movies/movie_info.dart';
 import 'package:movies/presentation/widgets/movies/movies_grid.dart';
 import 'package:movies/presentation/widgets/shared/video_player.dart';
+import 'package:movies/presentation/widgets/shared/webview.dart';
 
 class MovieInfoScreen extends ConsumerStatefulWidget {
 
@@ -60,9 +61,13 @@ class MovieInfoScreenState extends ConsumerState<MovieInfoScreen> {
           child: Column(
             children: <Widget>[
 
-              videos.isNotEmpty
+              /*videos.isNotEmpty
               ? VideoPlayerAsset(url: videos[0].url) 
-              : _MoviePosterNoVideo( url: movie.backdropLink),
+              : _MoviePosterNoVideo( url: movie.backdropLink),*/
+
+              videos.isNotEmpty
+                ? YoutubeWebview(videoKey: videos[0].key)
+                : VideoPlayerAsset(url: 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
                       
               _MovieTabsContainer(
                 movie: movie,
@@ -78,6 +83,7 @@ class MovieInfoScreenState extends ConsumerState<MovieInfoScreen> {
   }
 }
 
+// ignore: unused_element
 class _MoviePosterNoVideo extends StatelessWidget {
 
   final String url;
