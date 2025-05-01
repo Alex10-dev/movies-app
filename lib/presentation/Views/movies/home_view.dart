@@ -46,6 +46,9 @@ class HomeViewState extends ConsumerState<HomeView> {
 
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
+
+        if (scrollNotification.metrics.axis != Axis.vertical) return false;
+
         final collapsedHeight = kToolbarHeight;
         final isCollapsed = scrollNotification.metrics.pixels >= (expandedHeight - collapsedHeight);
 

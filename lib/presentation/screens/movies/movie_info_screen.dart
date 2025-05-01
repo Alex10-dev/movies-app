@@ -161,7 +161,7 @@ class _MovieTabsContainer extends StatelessWidget {
         color: Colors.transparent,
         child: DefaultTabController(
           initialIndex: 0,
-          length: 3,
+          length: 2,
           child: Column(
             children: <Widget>[
           
@@ -178,7 +178,7 @@ class _MovieTabsContainer extends StatelessWidget {
                 tabs: <Tab>[
                   Tab(text: 'Información'),
                   Tab(text: 'Sugerencias'),
-                  Tab(text: 'Entradas'),
+                  // Tab(text: 'Entradas'), TO DO
                 ],
               ),
           
@@ -192,7 +192,7 @@ class _MovieTabsContainer extends StatelessWidget {
                       ),
                     ),
                     MoviesGrid(movies: relatedMovies),
-                    const Center(child: Text('Information 2')),
+                    // const Center(child: Text('Entradas a Peliculas')), TO DO
                   ],
                 ),
               )
