@@ -19,6 +19,8 @@ class HomeView extends ConsumerStatefulWidget {
 
 class HomeViewState extends ConsumerState<HomeView> {
 
+  bool _isAppBarCollapsed = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,88 +42,106 @@ class HomeViewState extends ConsumerState<HomeView> {
     final int carouselIndex = ref.watch( currentMovieOnCarouselProvider );
     final ColorScheme colors = Theme.of(context).colorScheme;
 
-    return Stack(
-      children: [
-        CustomScrollView(
-          slivers: <Widget>[
+    final expandedHeight = MediaQuery.of(context).size.height * 0.65;
 
-            SliverAppBar(
-              backgroundColor: Colors.transparent,
-              pinned: true,
-              snap: false,
-              floating: false,
-              expandedHeight: MediaQuery.of(context).size.height * 0.65,
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text('Información', style: TextStyle(color: Colors.white),),
-                background: MainPostersCarousel(
-                  nowPlayingMovies: nowPlayingMovies,
-                  index: carouselIndex,
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        final collapsedHeight = kToolbarHeight;
+        final isCollapsed = scrollNotification.metrics.pixels >= (expandedHeight - collapsedHeight);
+
+        if (_isAppBarCollapsed != isCollapsed) {
+          setState(() {
+            _isAppBarCollapsed = isCollapsed;
+          });
+        }
+        return false;
+      },
+      child: Stack(
+        children: [
+          CustomScrollView(
+            slivers: <Widget>[
+      
+              SliverAppBar(
+                // backgroundColor: Colors.transparent,
+                pinned: true,
+                snap: false,
+                floating: false,
+                expandedHeight: expandedHeight,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: _isAppBarCollapsed 
+                    ? const Text('Información',)
+                    : null,
+                  collapseMode: CollapseMode.parallax,
+                  background: MainPostersCarousel(
+                    nowPlayingMovies: nowPlayingMovies,
+                    index: carouselIndex,
+                  ),
                 ),
               ),
-            ),
-
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 10,
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: MoviesCardsList(
-                  listTitle: 'Now Playing',
-                  colors: colors, 
-                  movies: nowPlayingMovies,
-                  horizontalPadding: 10,
-                  loadMoreMovies: () {
-                    ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
-                  },
+      
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
                 ),
               ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: MoviesCardsList(
-                  listTitle: 'Upcoming',
-                  colors: colors, 
-                  movies: upcomingMovies,
-                  horizontalPadding: 10,
-                  loadMoreMovies: () {
-                    ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
-                  },
+      
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: MoviesCardsList(
+                    listTitle: 'Now Playing',
+                    colors: colors, 
+                    movies: nowPlayingMovies,
+                    horizontalPadding: 10,
+                    loadMoreMovies: () {
+                      ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+                    },
+                  ),
                 ),
               ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: MoviesCardsList(
-                  listTitle: 'Most Popular',
-                  colors: colors, 
-                  movies: popularMovies,
-                  horizontalPadding: 10,
-                  loadMoreMovies: () {
-                    ref.read( popularMoviesProvider.notifier).loadNextPage();
-                  },
+      
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: MoviesCardsList(
+                    listTitle: 'Upcoming',
+                    colors: colors, 
+                    movies: upcomingMovies,
+                    horizontalPadding: 10,
+                    loadMoreMovies: () {
+                      ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
+                    },
+                  ),
                 ),
               ),
-            ),
-
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 100,
+      
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: MoviesCardsList(
+                    listTitle: 'Most Popular',
+                    colors: colors, 
+                    movies: popularMovies,
+                    horizontalPadding: 10,
+                    loadMoreMovies: () {
+                      ref.read( popularMoviesProvider.notifier).loadNextPage();
+                    },
+                  ),
+                ),
               ),
-            ),
-
-          ],
-        ),
-
-        
-      ],
+      
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 100,
+                ),
+              ),
+      
+            ],
+          ),
+      
+          
+        ],
+      ),
     );
   }
 }

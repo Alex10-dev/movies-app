@@ -29,6 +29,11 @@ class AppTheme {
     ),
     appBarTheme: const AppBarTheme(
       color: seedColor,
-    )
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(seedColor),
+      ),
+    ),
   );
 }

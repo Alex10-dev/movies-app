@@ -64,7 +64,7 @@ class _YoutubeWebviewState extends State<YoutubeWebview> {
               color: colors.surface,
               child: Center(
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: colors.onSurface,
                   strokeWidth: 6,
                 ),
               ),
