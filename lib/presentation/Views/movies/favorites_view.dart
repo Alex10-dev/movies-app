@@ -118,7 +118,10 @@ class _FavMoviesListState extends State<FavMoviesList> {
       itemCount: widget.favoritesMovies.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
-        child: MovieSearchItem(searchMovie: widget.favoritesMovies[index]),
+        child: MovieSearchItem(
+          searchMovie: widget.favoritesMovies[index],
+          currentView: 'favorites',
+        ),
       ),
     );
   }

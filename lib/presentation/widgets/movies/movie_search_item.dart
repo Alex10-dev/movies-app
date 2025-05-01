@@ -3,12 +3,15 @@ import 'package:go_router/go_router.dart';
 import 'package:movies/domain/entities/movie.dart';
 
 class MovieSearchItem extends StatelessWidget {
+
   const MovieSearchItem({
     super.key,
     required this.searchMovie,
+    this.currentView = 'search',
   });
 
   final Movie searchMovie;
+  final String? currentView;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class MovieSearchItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           // context.push('/movie/${widget.movies[index].id}');
-          context.push('/home/search/movie/${searchMovie.id}');
+          context.push('/home/$currentView/movie/${searchMovie.id}');
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
