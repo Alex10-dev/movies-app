@@ -25,7 +25,7 @@ class _VideoPlayerAssetState extends State<VideoPlayerAsset> {
   late bool _isPlaying = false;
   late double _volume = 1.0;
   late double _volumeBeforeMute = 1.0;
-  late int _duration = 0;
+  // late int _duration = 0;
   late String _videoTime = '00:00';
   late double _videoProgress = 0.0;
 
@@ -39,7 +39,7 @@ class _VideoPlayerAssetState extends State<VideoPlayerAsset> {
       setState(() {});
       _controller.setVolume(0.7);
       _controller.play();
-      _duration = _controller.value.position.inSeconds;
+      // _duration = _controller.value.position.inSeconds;
     });
 
     _controller.addListener(() {
@@ -51,7 +51,7 @@ class _VideoPlayerAssetState extends State<VideoPlayerAsset> {
         }
         _isPlaying = _controller.value.isPlaying;
         _volume = _controller.value.volume;
-        _duration = _controller.value.position.inSeconds;
+        // _duration = _controller.value.position.inSeconds;
         _videoTime = formatVideoTime(_controller.value.position.inSeconds, _controller.value.duration.inSeconds);
         calculateVideoProgress();
       });
@@ -225,7 +225,7 @@ class _VideoPlayerAssetState extends State<VideoPlayerAsset> {
                 : Container( color: Colors.transparent )
             ),
           ),
-          Text( _duration.toString() ),
+          // Text( _duration.toString() ),
         ]
       ),
     );

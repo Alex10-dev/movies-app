@@ -47,7 +47,7 @@ class MovieActorCard extends StatelessWidget {
                 Text(
                   actorName, 
                   style: TextStyle( 
-                    color: colors.surface, 
+                    color: colors.onSurface, 
                     fontSize: 14,
                   ),
                   maxLines: 2,
@@ -56,7 +56,7 @@ class MovieActorCard extends StatelessWidget {
                 Text(
                   character!, 
                   style: TextStyle( 
-                    color: colors.outlineVariant, 
+                    color: colors.outline, 
                     fontSize: 14
                   ),
                   maxLines: 2,

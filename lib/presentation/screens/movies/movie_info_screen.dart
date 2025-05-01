@@ -11,21 +11,22 @@ import 'package:movies/presentation/providers/movies/related_movies_provider.dar
 import 'package:movies/presentation/widgets/movies/movie_info.dart';
 import 'package:movies/presentation/widgets/movies/movies_grid.dart';
 import 'package:movies/presentation/widgets/shared/video_player.dart';
+import 'package:movies/presentation/widgets/shared/webview.dart';
 
-class MovieInfoModal extends ConsumerStatefulWidget {
+class MovieInfoScreen extends ConsumerStatefulWidget {
 
   final String movieId;
 
-  const MovieInfoModal({
+  const MovieInfoScreen({
     super.key,
     required this.movieId,
   });
 
   @override
-  MovieInfoModalState createState() => MovieInfoModalState();
+  MovieInfoScreenState createState() => MovieInfoScreenState();
 }
 
-class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
+class MovieInfoScreenState extends ConsumerState<MovieInfoScreen> {
 
   @override
   void initState() {
@@ -60,9 +61,13 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
           child: Column(
             children: <Widget>[
 
-              videos.isNotEmpty
+              /*videos.isNotEmpty
               ? VideoPlayerAsset(url: videos[0].url) 
-              : _MoviePosterNoVideo( url: movie.backdropLink),
+              : _MoviePosterNoVideo( url: movie.backdropLink),*/
+
+              videos.isNotEmpty
+                ? YoutubeWebview(videoKey: videos[0].key)
+                : VideoPlayerAsset(url: 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
                       
               _MovieTabsContainer(
                 movie: movie,
@@ -78,6 +83,7 @@ class MovieInfoModalState extends ConsumerState<MovieInfoModal> {
   }
 }
 
+// ignore: unused_element
 class _MoviePosterNoVideo extends StatelessWidget {
 
   final String url;
@@ -119,7 +125,9 @@ class _MovieModalAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton.filled(
           onPressed: (){
-            GoRouter.of(context).goNamed('home-screen');
+            final page = GoRouterState.of(context).pathParameters['page'];
+            // print('page: $page');
+            context.goNamed('home-screen', pathParameters: { 'page': page! });
           }, 
           icon: const Icon(Icons.close_rounded), color: Colors.white,
         )
@@ -146,31 +154,31 @@ class _MovieTabsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final ColorScheme colors = Theme.of(context).colorScheme;
+    // final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Expanded(
       child: Container(
-        color: colors.primary,
+        color: Colors.transparent,
         child: DefaultTabController(
           initialIndex: 0,
-          length: 3,
+          length: 2,
           child: Column(
             children: <Widget>[
           
-              TabBar(
-                indicatorColor: colors.surface,
-                labelColor: colors.surface,
-                unselectedLabelColor: colors.outlineVariant,
+              const TabBar(
+                // indicatorColor: colors.surface,
+                // labelColor: colors.surface,
+                // unselectedLabelColor: colors.outlineVariant,
                 dividerColor: Colors.transparent,
                 dividerHeight: 10.4,
                 indicatorWeight: 4,
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicatorAnimation: TabIndicatorAnimation.elastic,
-                textScaler: const TextScaler.linear(1.2),
-                tabs: const <Tab>[
+                textScaler: TextScaler.linear(1.2),
+                tabs: <Tab>[
                   Tab(text: 'Información'),
                   Tab(text: 'Sugerencias'),
-                  Tab(text: 'Entradas'),
+                  // Tab(text: 'Entradas'), TO DO
                 ],
               ),
           
@@ -184,7 +192,7 @@ class _MovieTabsContainer extends StatelessWidget {
                       ),
                     ),
                     MoviesGrid(movies: relatedMovies),
-                    const Center(child: Text('Information 2')),
+                    // const Center(child: Text('Entradas a Peliculas')), TO DO
                   ],
                 ),
               )

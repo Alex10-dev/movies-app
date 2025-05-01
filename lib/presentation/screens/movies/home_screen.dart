@@ -1,160 +1,95 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movies/domain/entities/movie.dart';
-import 'package:movies/presentation/providers/movies/current_movie_on_carousel_provider.dart';
-import 'package:movies/presentation/providers/movies/initial_loading_provider.dart';
-import 'package:movies/presentation/providers/movies/movies_providers.dart';
-import 'package:movies/presentation/widgets/movies/main_posters_carousel.dart';
-import 'package:movies/presentation/widgets/movies/movies_cards_list.dart';
-import 'package:movies/presentation/widgets/shared/full_screen_loader.dart';
+import 'package:go_router/go_router.dart';
+import 'package:movies/config/router/app_bottom_tab.dart';
+import 'package:movies/config/router/bottom_tabs_config.dart';
+import 'package:movies/presentation/utils/custom_docked_fab_location.dart';
+import 'package:movies/presentation/widgets/shared/custom_bottom_nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
 
   static const name = 'home-screen';
+  final String page;
 
-  final String? movieId;
+  const HomeScreen({super.key, required this.page});
 
-  const HomeScreen({super.key, this.movieId});
+  double initialOffsetFromCenter({
+    required BuildContext context, 
+    required int totalItems, 
+    int? activeItem = 1 
+  }) {
 
-  @override
-  Widget build(BuildContext context) {
+    if( totalItems < 2 ) throw Exception("Total items must be greather or equal 2");
 
-    final ColorScheme colors = Theme.of(context).colorScheme;
+    if( activeItem! > totalItems ) {
+      activeItem = totalItems;
+    } 
 
-    return Scaffold(
-      backgroundColor: colors.primary,
-      body: _HomeView(movieId),
+    if( activeItem < 1 ) {
+      activeItem = 1;
+    }
+
+    final double totalWidth = MediaQuery.of(context).size.width;
+    final double startOffsetX = totalWidth / 2;
+    final double itemWidth = totalWidth / totalItems;
+    final double itemOffsetCenter = itemWidth / 2;
+
+    return -startOffsetX + itemOffsetCenter + ( (activeItem - 1) * itemWidth );
+    
+  }
+
+  AppBottomTab updateCurrentTab( String page ) {
+    // print(page);
+    return appTabs.firstWhere(
+      (element) => element.route == page,
+      orElse: () => appTabs[0],
     );
   }
-}
-
-class _HomeView extends ConsumerStatefulWidget {
-
-  final String? movieId;
-
-  const _HomeView(this.movieId);
-
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends ConsumerState<_HomeView> {
-
-  @override
-  void initState() {
-    super.initState();
-
-    ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
-    ref.read( popularMoviesProvider.notifier ).loadNextPage();
-    ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
-  }
-
-  @override
-  /* void didChangeDependencies() {
-    super.didChangeDependencies();
-    if( widget.movieId != null ) {
-      Future.microtask(() {
-        if( !mounted ) return;
-        showMovieModal(widget.movieId!, context);
-      });
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
 
-    final isLoadingInfo = ref.watch( initialLoadingProvider );
-    if( isLoadingInfo ) return const FullScreenLoader();
+    // final ColorScheme colors = Theme.of(context).colorScheme;
+    // final location = GoRouterState.of(context).matchedLocation;
+    // int currentIndex = 0;
+    AppBottomTab activeTab = updateCurrentTab(page);
 
-    final List<Movie> nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
-    final List<Movie> popularMovies = ref.watch( popularMoviesProvider );
-    final List<Movie> upcomingMovies = ref.watch( upcomingMoviesProvider );
-    final int carouselIndex = ref.watch( currentMovieOnCarouselProvider );
-    final ColorScheme colors = Theme.of(context).colorScheme;
-
-    return Stack(
-      children: [
-        CustomScrollView(
-          slivers: <Widget>[
-
-            SliverAppBar(
-              backgroundColor: Colors.transparent,
-              pinned: true,
-              snap: false,
-              floating: false,
-              expandedHeight: 650,
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text('Información', style: TextStyle(color: Colors.white),),
-                background: MainPostersCarousel(
-                  nowPlayingMovies: nowPlayingMovies,
-                  index: carouselIndex,
-                ),
-              ),
-            ),
-
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 10,
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: MoviesCardsList(
-                  listTitle: 'Now Playing',
-                  colors: colors, 
-                  movies: nowPlayingMovies,
-                  horizontalPadding: 10,
-                  loadMoreMovies: () {
-                    ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
-                  },
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: MoviesCardsList(
-                  listTitle: 'Upcoming',
-                  colors: colors, 
-                  movies: upcomingMovies,
-                  horizontalPadding: 10,
-                  loadMoreMovies: () {
-                    ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
-                  },
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: MoviesCardsList(
-                  listTitle: 'Most Popular',
-                  colors: colors, 
-                  movies: popularMovies,
-                  horizontalPadding: 10,
-                  loadMoreMovies: () {
-                    ref.read( popularMoviesProvider.notifier).loadNextPage();
-                  },
-                ),
-              ),
-            ),
-
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 10,
-              ),
-            ),
-
-          ],
-        ),
-
-        
-      ],
+    return Scaffold(
+      extendBody: true,
+      // backgroundColor: colors.onPrimaryFixed,
+      resizeToAvoidBottomInset: false,
+      floatingActionButtonLocation: CustomDockedFabLocation(
+        adjustmentX: initialOffsetFromCenter(
+          context: context, 
+          totalItems: appTabs.length, 
+          activeItem: activeTab.index + 1,
+        ), 
+        adjustmentY: 5
+      ),
+      floatingActionButton: FloatingActionButton(
+        isExtended: false,
+        shape: const CircleBorder(),
+        onPressed: (){
+          // print(MediaQuery.of(context).size.width);
+          // Scaffold.geometryOf(context).value;
+        },
+        tooltip: activeTab.label,
+        child: Icon(activeTab.icon, size: 28,),
+      ),
+      bottomNavigationBar: CustomButtomNavBar(
+        currentIndex: activeTab.index,
+        onTabChanged: (page) {
+          activeTab = updateCurrentTab(page);
+          context.go('/home/${activeTab.route}');
+        }
+      ),
+      // body: const HomeView(),
+      // body: const SearchView(),
+      // body: Placeholder(),
+      body: IndexedStack(
+        index: activeTab.index,
+        children: List.generate(appTabs.length, (index) => appTabs[index].view)
+      ),
     );
   }
 }

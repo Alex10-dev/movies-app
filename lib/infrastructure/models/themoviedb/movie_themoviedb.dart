@@ -35,18 +35,18 @@ class MovieFromMovieDB {
     factory MovieFromMovieDB.fromJson(Map<String, dynamic> json) => MovieFromMovieDB(
         adult: json["adult"] ?? false,
         backdropPath: json["backdrop_path"] ?? '',
-        genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
+        genreIds: json["genre_ids"] != null ? List<int>.from(json["genre_ids"].map((x) => x)) : [],
         id: json["id"],
         originalLanguage: json["original_language"],
         originalTitle: json["original_title"],
         overview: json["overview"] ?? '',
-        popularity: json["popularity"]?.toDouble(),
+        popularity: json["popularity"] != null ? json["popularity"].toDouble() : 0.0,
         posterPath: json["poster_path"] ?? '',
         releaseDate: _parseDateFromJson(json["release_date"]),
         title: json["title"],
-        video: json["video"],
-        voteAverage: json["vote_average"]?.toDouble(),
-        voteCount: json["vote_count"],
+        video: json["video"] ?? false,
+        voteAverage: json["vote_average"] != null ? json["vote_average"].toDouble() : 0.0,
+        voteCount: json["vote_count"] ?? 0,
     );
 
     Map<String, dynamic> toJson() => {
@@ -66,9 +66,9 @@ class MovieFromMovieDB {
         "vote_count": voteCount,
     };
 
-    static DateTime _parseDateFromJson( String dateString ) {
+    static DateTime _parseDateFromJson( String? dateString ) {
       try {
-        return DateTime.parse(dateString);
+        return DateTime.parse(dateString!);
       } catch( e ) {
         return DateTime.now();
       }

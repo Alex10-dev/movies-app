@@ -19,11 +19,14 @@ class MainPostersCarousel extends StatelessWidget {
         Column(
           children: [
             Expanded(
-              child: Image.network(
-                nowPlayingMovies.isEmpty 
-                  ? 'https://picsum.photos/250?image=9' 
-                  : nowPlayingMovies[index].posterLink, 
-                fit: BoxFit.fill,
+              child: SizedBox(
+                width: double.infinity,
+                child: Image.network(
+                  nowPlayingMovies.isEmpty 
+                    ? 'https://picsum.photos/250?image=9' 
+                    : nowPlayingMovies[index].posterLink, 
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ],
@@ -35,7 +38,7 @@ class MainPostersCarousel extends StatelessWidget {
           children: <Widget>[
             const Spacer(),
             SizedBox(
-              height: 200,
+              height: 180,
               child: Carousel(movies: nowPlayingMovies,)
             )
           ],
